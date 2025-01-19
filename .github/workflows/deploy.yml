@@ -19,13 +19,19 @@ jobs:
       - name: Install dependencies
         run: npm ci
         
-      - name: Run pre-launch checks
-        run: npm run prelaunch
+      - name: Run type check
+        run: npm run type-check
+        
+      - name: Run tests
+        run: npm test
+        
+      - name: Build
+        run: npm run build
         env:
-          CI: true
+          NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
           
-      - name: Deploy to production
-        if: success()
+      - name: Deploy to Vercel
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
