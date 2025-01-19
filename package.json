@@ -1,0 +1,52 @@
+{
+  "name": "your-app-name",
+  "version": "1.0.0",
+  "private": true,
+  "author": {
+    "name": "Your Company Name",
+    "email": "contact@company.com",
+    "url": "https://company.com"
+  },
+  "license": "PROPRIETARY",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-repo"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "launch": "bash scripts/launch.sh"
+  },
+  "dependencies": {
+    "@paypal/react-paypal-js": "^latest",
+    "@prisma/client": "^latest",
+    "@sentry/nextjs": "^latest",
+    "@tanstack/react-query": "^latest",
+    "bcryptjs": "^latest",
+    "framer-motion": "^latest",
+    "ioredis": "^latest",
+    "jsonwebtoken": "^latest",
+    "next": "^latest",
+    "react": "^latest",
+    "react-dom": "^latest",
+    "socket.io-client": "^latest",
+    "zustand": "^latest"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^latest",
+    "@testing-library/react": "^latest",
+    "@types/bcryptjs": "^latest",
+    "@types/jest": "^latest",
+    "@types/jsonwebtoken": "^latest",
+    "@types/node": "^latest",
+    "@types/react": "^latest",
+    "@types/react-dom": "^latest",
+    "jest": "^latest",
+    "jest-environment-jsdom": "^latest",
+    "typescript": "^latest"
+  }
+} 
