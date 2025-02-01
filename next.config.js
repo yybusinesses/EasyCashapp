@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['localhost', 'your-production-domain.com'],
+    domains: ['localhost', 'vercel.app'],
   },
   experimental: {
-    serverActions: true,
+    // Remove serverActions since it's now default
   },
   typescript: {
     ignoreBuildErrors: false,
