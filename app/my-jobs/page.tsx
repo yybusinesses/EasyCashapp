@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
-import { Tabs } from '../../components/Tabs'
+import { Tabs } from '@/components/ui/tabs'
 import { JobList } from '@/components/jobs/JobList'
 import { LoadingSkeleton } from '@/components/LoadingState'
 
