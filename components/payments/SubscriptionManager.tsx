@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { Toast } from '@/components/Toast'
 
@@ -9,6 +9,10 @@ interface Subscription {
   status: 'ACTIVE' | 'CANCELLED' | 'EXPIRED';
   currentPeriodEnd: string;
   price: number;
+}
+
+interface SubscriptionError {
+  message: string;
 }
 
 const plans = {
@@ -30,22 +34,27 @@ const plans = {
 }
 
 export function SubscriptionManager() {
-  const { data: subscription, isLoading } = useQuery<Subscription>({
+  const [error, setError] = useState<string | null>(null)
+
+  const { data: subscription, isLoading } = useQuery<Subscription, SubscriptionError>({
     queryKey: ['subscription'],
     queryFn: async () => {
-      const res = await fetch('/api/payments/subscription')
-      if (!res.ok) throw new Error('Failed to fetch subscription')
-      return res.json()
+      const response = await fetch('/api/subscription')
+      if (!response.ok) throw new Error('Failed to fetch subscription')
+      return response.json()
     }
   })
 
   const cancelMutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch('/api/payments/subscription/cancel', {
+      const response = await fetch('/api/subscription/cancel', {
         method: 'POST'
       })
-      if (!res.ok) throw new Error('Failed to cancel subscription')
-      return res.json()
+      if (!response.ok) throw new Error('Failed to cancel subscription')
+      return response.json()
+    },
+    onError: (error: Error) => {
+      setError(error.message)
     }
   })
 

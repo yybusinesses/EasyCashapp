@@ -1,0 +1,29 @@
+{
+  "navigation": {
+    "home": "Startseite",
+    "jobs": "Stellenangebote",
+    "messages": "Nachrichten",
+    "profile": "Profil"
+  },
+  "jobs": {
+    "applied": "Beworbene Stellen",
+    "saved": "Gespeicherte Stellen",
+    "status": {
+      "applied": "Beworben",
+      "accepted": "Angenommen",
+      "rejected": "Abgelehnt",
+      "withdrawn": "Zurückgezogen"
+    },
+    "actions": {
+      "apply": "Bewerben",
+      "withdraw": "Zurückziehen",
+      "save": "Speichern",
+      "unsave": "Entfernen"
+    }
+  },
+  "common": {
+    "loading": "Lädt...",
+    "error": "Ein Fehler ist aufgetreten",
+    "noResults": "Keine Ergebnisse gefunden"
+  }
+} 

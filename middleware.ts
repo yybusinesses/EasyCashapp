@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { verifyAuth } from '@/lib/auth'
-import { rateLimit } from '@/lib/rate-limit'
+import { match as matchLocale } from '@formatjs/intl-localematcher'
+import Negotiator from 'negotiator'
 
 // Add paths that don't require authentication
 const publicPaths = [
@@ -12,13 +13,30 @@ const publicPaths = [
   '/contact'
 ]
 
-// Create rate limiter
-const limiter = rateLimit({
-  interval: 60 * 1000, // 1 minute
-  uniqueTokenPerInterval: 500
-})
+const locales = ['en', 'de', 'es', 'fr']
+const defaultLocale = 'en'
+
+function getLocale(request: NextRequest): string {
+  const negotiatorHeaders: Record<string, string> = {}
+  request.headers.forEach((value, key) => (negotiatorHeaders[key] = value))
+
+  const languages = new Negotiator({ headers: negotiatorHeaders }).languages()
+  return matchLocale(languages, locales, defaultLocale)
+}
 
 export async function middleware(request: NextRequest) {
+  const pathname = request.nextUrl.pathname
+  const pathnameIsMissingLocale = locales.every(
+    locale => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+  )
+
+  if (pathnameIsMissingLocale) {
+    const locale = getLocale(request)
+    return NextResponse.redirect(
+      new URL(`/${locale}${pathname}`, request.url)
+    )
+  }
+
   const path = request.nextUrl.pathname
 
   // Allow public paths
@@ -26,42 +44,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Apply rate limiting to API routes
-  if (path.startsWith('/api/')) {
-    try {
-      await limiter.check(request, 60, 'CACHE_TOKEN') // 60 requests per minute
-    } catch {
-      return new NextResponse('Too Many Requests', { status: 429 })
-    }
-  }
-
-  // CORS headers
-  if (request.method === 'OPTIONS') {
-    return new NextResponse(null, {
-      headers: {
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Access-Control-Allow-Origin': process.env.ALLOWED_ORIGINS || '*',
-      },
-    })
-  }
-
-  const token = request.cookies.get('token')?.value
-  
-  if (!token) {
-    return NextResponse.redirect(new URL('/auth/login', request.url))
-  }
-
+  // Check authentication
   try {
-    // Verify token and get user role
-    const { role } = await verifyAuth(token)
-
-    // Role-based access control
-    if (path.startsWith('/client') && role !== 'client') {
+    const token = request.cookies.get('token')?.value
+    if (!token) {
       return NextResponse.redirect(new URL('/auth/login', request.url))
     }
 
-    if (path.startsWith('/freelancer') && role !== 'freelancer') {
+    const user = await verifyAuth(token)
+    if (!user) {
       return NextResponse.redirect(new URL('/auth/login', request.url))
     }
 
@@ -93,6 +84,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
     '/client/:path*',
     '/freelancer/:path*',
     '/api/protected/:path*'

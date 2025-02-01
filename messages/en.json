@@ -1,0 +1,29 @@
+{
+  "navigation": {
+    "home": "Home",
+    "jobs": "Jobs",
+    "messages": "Messages",
+    "profile": "Profile"
+  },
+  "jobs": {
+    "applied": "Applied Jobs",
+    "saved": "Saved Jobs",
+    "status": {
+      "applied": "Applied",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "withdrawn": "Withdrawn"
+    },
+    "actions": {
+      "apply": "Apply",
+      "withdraw": "Withdraw",
+      "save": "Save",
+      "unsave": "Unsave"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "noResults": "No results found"
+  }
+} 

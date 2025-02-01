@@ -83,6 +83,17 @@ export interface Project {
     max: number;
     currency: string;
   };
+  location: {
+    type: 'REMOTE' | 'ON_SITE' | 'HYBRID';
+    coordinates?: {
+      latitude: number;
+      longitude: number;
+    };
+    address?: string;
+    radius?: number; // in kilometers
+    country?: string;
+    city?: string;
+  };
   skills: string[];
   timeline: {
     deadline: Date;
@@ -98,4 +109,19 @@ export interface Milestone {
   amount: number;
   deadline: Date;
   status: 'pending' | 'in-progress' | 'completed' | 'disputed';
+}
+
+export interface SearchFilters {
+  location?: {
+    latitude: number;
+    longitude: number;
+    radius: number; // in kilometers
+  };
+  jobType?: ('REMOTE' | 'ON_SITE' | 'HYBRID')[];
+  skills?: string[];
+  budget?: {
+    min?: number;
+    max?: number;
+  };
+  availability?: string;
 } 
