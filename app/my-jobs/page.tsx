@@ -1,13 +1,15 @@
 'use client'
 import React, { useState } from 'react'
 import { useAuth } from '@/contexts/AuthContext'
-import { Tabs } from '@/components/Tabs'
+import { Tabs } from '../../components/Tabs'
 import { JobList } from '@/components/jobs/JobList'
 import { LoadingSkeleton } from '@/components/LoadingState'
 
+type TabType = 'applied' | 'saved'
+
 export default function MyJobs() {
   const { user } = useAuth()
-  const [activeTab, setActiveTab] = useState('applied')
+  const [activeTab, setActiveTab] = useState<TabType>('applied')
 
   if (!user) return null
 
@@ -21,7 +23,7 @@ export default function MyJobs() {
           { id: 'saved', label: 'Saved Jobs' }
         ]}
         activeTab={activeTab}
-        onChange={setActiveTab}
+        onChange={(tab) => setActiveTab(tab as TabType)}
       />
 
       <div className="mt-6">
