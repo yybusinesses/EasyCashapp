@@ -1,1 +1,17 @@
- 
+'use client'
+import React from 'react'
+import { LoadingSkeleton } from '../LoadingState'
+
+interface JobListProps {
+  type: 'applied' | 'saved'
+}
+
+export function JobList({ type }: JobListProps) {
+  return (
+    <div className="space-y-4">
+      <div className="text-center text-gray-500 py-8">
+        No {type} jobs found
+      </div>
+    </div>
+  )
+} 
